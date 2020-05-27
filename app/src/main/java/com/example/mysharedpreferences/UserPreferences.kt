@@ -1,0 +1,37 @@
+package com.example.mysharedpreferences
+
+import android.content.Context
+
+internal class UserPreferences (context: Context){
+    companion object {
+        private const val PREF_NAME = "user_pref"
+        private const val NAME = "name"
+        private const val EMAIL = "email"
+        private const val AGE = "age"
+        private const val PHONE_NUMBER = "phone"
+        private const val LOVE_MU = "isLove"
+    }
+
+    private val preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+    fun setUser(value: UserModel) {
+        val editor = preferences.edit()
+        editor.putString(NAME, value.name)
+        editor.putString(EMAIL, value.email)
+        editor.putInt(AGE, value.age?:0)
+        editor.putString(PHONE_NUMBER, value.phoneNumber)
+        editor.putBoolean(LOVE_MU, value.isLove)
+        editor.apply()
+    }
+
+    fun getUser() : UserModel {
+        val model = UserModel()
+        model.name = preferences.getString(NAME, "")
+        model.email = preferences.getString(EMAIL, "")
+        model.age = preferences.getInt(AGE, 0)
+        model.phoneNumber = preferences.getString(PHONE_NUMBER, "")
+        model.isLove = preferences.getBoolean(LOVE_MU, false)
+
+        return model
+    }
+}
